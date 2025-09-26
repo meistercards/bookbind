@@ -1,1 +1,29 @@
-test.txt
+# Development and testing files
+mintbook/
+thyme_apps/
+thyme-editor-tools/
+thyme-os-repo/
+thyme-testing-framework/
+archive/
+website/
+.dev/
+.claude/
+
+# Old/legacy files
+thyme_installer.sh
+fix_thyme_issues.sh
+fix_libresolv.sh
+keyboard_fix.sh
+wipe_drive.sh
+thyme_os_features.md
+THYME_OS_RELEASE_NOTES.md
+
+# Development docs
+OBJECTIVES.md
+plan.md
+
+# Folders that might be generated
+optimizations/
+boot_troubleshooting/
+branding/
+built_in_features/

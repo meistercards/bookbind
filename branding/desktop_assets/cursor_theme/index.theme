@@ -1,7 +1,0 @@
-[Icon Theme]
-Name=Thyme Cursors
-Comment=Thyme OS cursor theme
-Inherits=default
-
-# This would typically include custom cursor files
-# For now, inherits from system default with Thyme accent colors

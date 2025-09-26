@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=Thyme OS
-Description=Thyme OS boot splash with MacBook compatibility branding
-ModuleName=script
-
-[script]
-ImageDir=/usr/share/plymouth/themes/thyme
-ScriptFile=/usr/share/plymouth/themes/thyme/thyme.script

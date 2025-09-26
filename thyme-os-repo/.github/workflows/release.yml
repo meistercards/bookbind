@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-release:
+    name: Build Release ISO
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up build environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y debootstrap squashfs-tools genisoimage rsync
+        
+    - name: Download Linux Mint base
+      run: |
+        python3 build/scripts/download_base.py --version stable
+        
+    - name: Build Thyme OS ISO
+      run: |
+        python3 build/build_system.py create \
+          --target release \
+          --hardware all \
+          --output "thyme-os-${{ github.ref_name }}.iso"
+          
+    - name: Generate checksums
+      run: |
+        sha256sum thyme-os-${{ github.ref_name }}.iso > checksums.txt
+        
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          thyme-os-${{ github.ref_name }}.iso
+          checksums.txt
+        body_path: releases/RELEASE_NOTES.md
+        draft: false
+        prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+  update-website:
+    name: Update Website
+    needs: build-release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Update download links
+      run: |
+        python3 website/scripts/update_download_links.py --version ${{ github.ref_name }}
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./website
+        cname: thyme-os.org

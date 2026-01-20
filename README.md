@@ -1,4 +1,4 @@
-# BookBind
+# BookBind (Thyme OS)
 
 **📖 Linux installer for old MacBooks**
 
